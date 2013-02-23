@@ -1,4 +1,30 @@
+/*jslint browser:true */
+/*global Crafty, $ */
+
+'use strict';
+
 (function () {
+
+    var Game, gamestate;
+
+    gamestate = {
+        position: 0,
+
+        rooms: []
+    };
+
+    gamestate.loadRightRoom = function () {
+        console.log("load right room");
+    };
+
+    gamestate.loadLeftRoom = function () {
+        console.log("load left room");
+    };
+
+    gamestate.rooms[0] = 'entrance';
+    gamestate.rooms[1] = 'room1';
+    gamestate.rooms[2] = 'room2';
+
     //
     // Components
     //
@@ -25,17 +51,53 @@
     });
 
     // Limit movement to within the viewport
-    Crafty.c('ViewportBounded', {
+    Crafty.c('RoomControls', {
         init: function () {
             this.requires('2D');
         },
         // this must be called when the element is moved event callback
         checkOutOfBounds: function (oldPosition) {
             if (!this.within(0, 0, Crafty.viewport.width, Crafty.viewport.height)) {
-                this.attr({
-                    x: oldPosition.x,
-                    y: oldPosition.y
-                });
+
+                if (this.x >= Crafty.viewport.width - 100) {
+                    // load the screen to the right
+                    gamestate.position += 1;
+                    if (gamestate.position >= gamestate.rooms.length) {
+                        gamestate.position = gamestate.rooms.length - 1;
+                        this.attr({
+                            x: oldPosition.x,
+                            y: oldPosition.y
+                        });
+                    } else {
+                        Crafty.scene(gamestate.rooms[gamestate.position]);
+                        this.attr({
+                            x: 100,
+                            y: oldPosition.y
+                        });
+                    }
+                } else if (this.x < 0) {
+                    // load the screen to the left
+                    gamestate.position -= 1;
+                    if (gamestate.position < 0) {
+                        gamestate.position = 0;
+                        this.attr({
+                            x: oldPosition.x,
+                            y: oldPosition.y
+                        });
+                    } else {
+                        Crafty.scene(gamestate.rooms[gamestate.position]);
+                        this.attr({
+                            x: (Crafty.viewport.width - 200),
+                            y: oldPosition.y
+                        });
+                    }
+                } else {
+                    this.attr({
+                        x: oldPosition.x,
+                        y: oldPosition.y
+                    });
+                }
+
             }
         }
     });
@@ -43,7 +105,7 @@
     // Player component    
     Crafty.c('Player', {
         init: function () {
-            this.requires('Renderable, ViewportBounded, Collision, PlatformerGravity, PlatformerControls')
+            this.requires('Persist, Renderable, RoomControls, Collision, PlatformerGravity, PlatformerControls')
                 // set sprite
                 .spriteName('man')
                 // set starting position
@@ -63,10 +125,10 @@
             // we need to flip the sprite for each direction we are travelling in
             this.bind('NewDirection', function (direction) {
                 if (direction.x > 0) {
-                    this.flip()
+                    this.flip();
                 } else if (direction.x < 0) {
-                    this.unflip()
-                } 
+                    this.unflip();
+                }
             });
         }
     });
@@ -75,10 +137,12 @@
     //
     // Game loading and initialisation
     //    
-    var Game = function () {
-            Crafty.scene('loading', this.loadingScene);
-            Crafty.scene('main', this.mainScene);
-        };
+    Game = function () {
+        Crafty.scene('loading', this.loadingScene);
+        Crafty.scene('entrance', this.entrance);
+        Crafty.scene('room1', this.room1);
+        Crafty.scene('room2', this.room2);
+    };
 
     Game.prototype.initCrafty = function () {
         console.log("page ready, starting CraftyJS");
@@ -113,7 +177,8 @@
 
             // jump to the main scene in half a second
             loading.delay(function () {
-                Crafty.scene('main');
+                Crafty.e('Player');
+                Crafty.scene('entrance');
             }, 500);
         }
 
@@ -127,26 +192,49 @@
 
         // list of images to load
         Crafty.load(
-        ['img/man.png'],
-        onLoaded, onProgress, onError);
+            ['img/man.png'],
+            onLoaded,
+            onProgress,
+            onError
+        );
 
     };
 
     //
     // The main game scene
     //
-    Game.prototype.mainScene = function () {
-        //create a player...
-        Crafty.e('Player');
+
+    Game.prototype.entrance = function () {
 
         //This is the floor
         Crafty.e('Platform').attr({x: 0, y: 584, w: 1000, h: 16});
 
         //These are the platforms
         Crafty.e('Platform').attr({x: 300, y: 450, w: 100, h: 16});
-        Crafty.e('Platform').attr({x: 500, y: 300, w: 100, h: 16});
         Crafty.e('Platform').attr({x: 700, y: 450, w: 100, h: 16});
     };
+
+
+    Game.prototype.room1 = function () {
+
+        //This is the floor
+        Crafty.e('Platform').attr({x: 0, y: 584, w: 1000, h: 16});
+
+        //These are the platforms
+        Crafty.e('Platform').attr({x: 700, y: 450, w: 100, h: 16});
+    };
+
+
+    Game.prototype.room2 = function () {
+
+        //This is the floor
+        Crafty.e('Platform').attr({x: 0, y: 584, w: 1000, h: 16});
+
+        //These are the platforms
+    };
+
+
+
 
     // kick off the game when the web page is ready
     $(document).ready(function () {
