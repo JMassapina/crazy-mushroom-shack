@@ -238,6 +238,8 @@
 
     Game.prototype.entrance = function () {
 
+        Crafty.background("url('img/background1.png')");
+
         //This is the floor
         Crafty.e('Platform').attr({x: 0, y: 584, w: 1000, h: 16});
 
@@ -248,6 +250,8 @@
 
 
     Game.prototype.room1 = function () {
+
+        Crafty.background("url('img/background2.png')");
 
         //This is the floor
         Crafty.e('Platform').attr({x: 0, y: 584, w: 1000, h: 16});
@@ -261,6 +265,8 @@
 
 
     Game.prototype.room2 = function () {
+
+        Crafty.background("url('img/background3.png')");
 
         //This is the floor
         Crafty.e('Platform').attr({x: 0, y: 584, w: 1000, h: 16});
