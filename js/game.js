@@ -46,7 +46,7 @@
     Crafty.c('Platform', {
         init: function () {
             this.requires('Renderable, Collision, Color')
-                .color('green');
+                .color('brown');
         }
     });
 
@@ -140,7 +140,7 @@
             this.requires('2D');
 
             // the EnterFrame event is very useful for per-frame updates!
-            this.bind("EnterFrame", function() {
+            this.bind("EnterFrame", function () {
                 this.alpha = Math.max(this._alpha - this._fadeSpeed, 0.0);
                 if (this.alpha < 0.05) {
                     this.trigger('Faded');
@@ -289,7 +289,8 @@
         Crafty.e('Platform').attr({x: 300, y: 450, w: 100, h: 16});
         Crafty.e('Platform').attr({x: 700, y: 450, w: 100, h: 16});
 
-        Crafty.e('Mushroom').attr({x: 500, y: 400, w: 69, h: 100});
+        // mushrooms
+        Crafty.e('Mushroom').attr({x: 500, y: 500, w: 69, h: 100});
     };
 
 
@@ -304,7 +305,7 @@
         Crafty.e('Platform').attr({x: 700, y: 450, w: 100, h: 16});
 
         // mushrooms
-        Crafty.e('Mushroom').attr({x: 500, y: 400, w: 69, h: 100});
+        Crafty.e('Mushroom').attr({x: 500, y: 500, w: 69, h: 100});
     };
 
 
