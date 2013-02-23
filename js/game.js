@@ -287,6 +287,7 @@
 
         // mushrooms
         Crafty.e('Mushroom').attr({x: 500, y: 500, w: 69, h: 100});
+        Crafty.e('Mushroom').attr({x: 300, y: 350, w: 69, h: 100});
     };
 
 
@@ -301,7 +302,8 @@
         Crafty.e('Platform').attr({x: 700, y: 450, w: 100, h: 16});
 
         // mushrooms
-        Crafty.e('Mushroom').attr({x: 500, y: 500, w: 69, h: 100});
+        Crafty.e('Mushroom').attr({x: 700, y: 350, w: 69, h: 100});
+        Crafty.e('Mushroom').attr({x: 300, y: 500, w: 69, h: 100});
     };
 
 
@@ -312,7 +314,11 @@
         //This is the floor
         Crafty.e('Platform').attr({x: 0, y: 584, w: 1000, h: 16});
 
+
+        Crafty.e('Platform').attr({x: 600, y: 400, w: 100, h: 16});
+
         // mushrooms
+        Crafty.e('Mushroom').attr({x: 600, y: 300, w: 69, h: 100});
     };
 
 
