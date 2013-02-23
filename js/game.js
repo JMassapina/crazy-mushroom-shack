@@ -134,6 +134,41 @@
     });
 
 
+    // a component to fade out an entity over time
+    Crafty.c('FadeOut', {
+        init: function() {
+            this.requires('2D');
+
+            // the EnterFrame event is very useful for per-frame updates!
+            this.bind("EnterFrame", function() {
+                this.alpha = Math.max(this._alpha - this._fadeSpeed, 0.0);
+                if (this.alpha < 0.05) {
+                    this.trigger('Faded');
+                    // its practically invisible at this point, remove the object
+                    this.destroy();
+                }
+            });
+        },
+        // set the speed of fading out - should be a small number e.g. 0.01
+        fadeOut: function(speed) {
+            // reminder: be careful to avoid name clashes...
+            this._fadeSpeed = speed;
+            return this; // so we can chain calls to setup functions
+        }
+    });
+
+
+    // an exciting explosion!
+    Crafty.c('Explosion', {
+        init: function () {
+            // reuse some helpful components
+            this.requires('Renderable, FadeOut')
+                .spriteName('explosion')
+                .fadeOut(0.1);
+        }
+    });
+
+
     // targets to shoot at
     Crafty.c('Mushroom', {
         init: function () {
@@ -151,10 +186,10 @@
             //score.increment();
 
             // show an explosion!
-            //Crafty.e("Explosion").attr({x:this.x, y:this.y});
+            Crafty.e("Explosion").attr({x: this.x, y: this.y});
 
             // hide this offscreen
-            //this.x = -2000;
+            this.destroy();
 
             // reappear after a second in a new position
             //this.delay(this._randomlyPosition, 1000);
@@ -210,6 +245,10 @@
                 crazyMushroom2: [0, 0, 69, 100]
             });
 
+            Crafty.sprite('img/explosion.png', {
+                explosion: [0, 0, 100, 103]
+            });
+
             // jump to the main scene in half a second
             loading.delay(function () {
                 Crafty.e('Player');
@@ -227,7 +266,7 @@
 
         // list of images to load
         Crafty.load(
-            ['img/player.png', 'img/crazyMushroom2.png'],
+            ['img/player.png', 'img/crazyMushroom2.png', 'img/explosion.png'],
             onLoaded,
             onProgress,
             onError
