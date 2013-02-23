@@ -1,4 +1,15 @@
+/*jslint browser:true */
+/*global Crafty, $ */
+
+'use strict';
+
 (function () {
+
+    var Game, roominfo;
+
+    roominfo = {};
+
+
     //
     // Components
     //
@@ -63,10 +74,10 @@
             // we need to flip the sprite for each direction we are travelling in
             this.bind('NewDirection', function (direction) {
                 if (direction.x > 0) {
-                    this.flip()
+                    this.flip();
                 } else if (direction.x < 0) {
-                    this.unflip()
-                } 
+                    this.unflip();
+                }
             });
         }
     });
@@ -75,10 +86,10 @@
     //
     // Game loading and initialisation
     //    
-    var Game = function () {
-            Crafty.scene('loading', this.loadingScene);
-            Crafty.scene('main', this.mainScene);
-        };
+    Game = function () {
+        Crafty.scene('loading', this.loadingScene);
+        Crafty.scene('main', this.mainScene);
+    };
 
     Game.prototype.initCrafty = function () {
         console.log("page ready, starting CraftyJS");
@@ -127,8 +138,11 @@
 
         // list of images to load
         Crafty.load(
-        ['img/man.png'],
-        onLoaded, onProgress, onError);
+            ['img/man.png'],
+            onLoaded,
+            onProgress,
+            onError
+        );
 
     };
 
