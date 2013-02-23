@@ -134,6 +134,34 @@
     });
 
 
+    // targets to shoot at
+    Crafty.c('Mushroom', {
+        init: function () {
+            this.requires('Renderable, Collision')
+                // choose a random enemy sprite to use
+                .spriteName('crazyMushroom2')
+                .collision()
+                // detect when we get hit by bullets
+                .onHit('Player', this.hitByPlayer);
+        },
+        // we got hit!
+        hitByPlayer: function () {
+            // find the global 'Score' component
+            //var score = Crafty('Score');
+            //score.increment();
+
+            // show an explosion!
+            //Crafty.e("Explosion").attr({x:this.x, y:this.y});
+
+            // hide this offscreen
+            //this.x = -2000;
+
+            // reappear after a second in a new position
+            //this.delay(this._randomlyPosition, 1000);
+            console.log("hit me");
+        },
+    });
+
     //
     // Game loading and initialisation
     //    
@@ -173,6 +201,10 @@
             // set up sprites
             Crafty.sprite('img/man.png', {
                 man: [0, 0, 50, 100]
+            });
+
+            Crafty.sprite('img/crazyMushroom2.png', {
+                crazyMushroom2: [0, 0, 69, 100]
             });
 
             // jump to the main scene in half a second
@@ -222,6 +254,9 @@
 
         //These are the platforms
         Crafty.e('Platform').attr({x: 700, y: 450, w: 100, h: 16});
+
+        // mushrooms
+        Crafty.e('Mushroom').attr({x: 500, y: 400, w: 69, h: 100});
     };
 
 
