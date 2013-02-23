@@ -233,7 +233,8 @@
             w: 100,
             h: 20
         });
-        loading.text('loading...');
+
+        Crafty.background("url('img/TitleScreen.jpg')");
 
         function onLoaded() {
             // set up sprites
@@ -253,11 +254,7 @@
             loading.delay(function () {
                 Crafty.e('Player');
                 Crafty.scene('entrance');
-            }, 500);
-        }
-
-        function onProgress(progress) {
-            loading.text('loading... ' + progress.percent + '% complete');
+            }, 3000);
         }
 
         function onError() {
@@ -268,7 +265,6 @@
         Crafty.load(
             ['img/player.png', 'img/crazyMushroom2.png', 'img/explosion.png'],
             onLoaded,
-            onProgress,
             onError
         );
 
