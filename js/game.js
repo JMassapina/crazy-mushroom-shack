@@ -59,7 +59,7 @@
         checkOutOfBounds: function (oldPosition) {
             if (!this.within(0, 0, Crafty.viewport.width, Crafty.viewport.height)) {
 
-                if (this.x >= Crafty.viewport.width - 100) {
+                if (this.x >= Crafty.viewport.width - 169) {
                     // load the screen to the right
                     gamestate.position += 1;
                     if (gamestate.position >= gamestate.rooms.length) {
@@ -107,7 +107,7 @@
         init: function () {
             this.requires('Persist, Renderable, RoomControls, Collision, PlatformerGravity, PlatformerControls')
                 // set sprite
-                .spriteName('man')
+                .spriteName('player')
                 // set starting position
                 .attr({ x: 100, y: 200 })
                 // set platform-style controller up with walk + jump speeds
@@ -162,6 +162,9 @@
         },
     });
 
+
+
+
     //
     // Game loading and initialisation
     //    
@@ -199,8 +202,8 @@
 
         function onLoaded() {
             // set up sprites
-            Crafty.sprite('img/man.png', {
-                man: [0, 0, 50, 100]
+            Crafty.sprite('img/player.png', {
+                player: [0, 0, 132, 100]
             });
 
             Crafty.sprite('img/crazyMushroom2.png', {
@@ -224,7 +227,7 @@
 
         // list of images to load
         Crafty.load(
-            ['img/man.png'],
+            ['img/player.png', 'img/crazyMushroom2.png'],
             onLoaded,
             onProgress,
             onError
@@ -246,6 +249,8 @@
         //These are the platforms
         Crafty.e('Platform').attr({x: 300, y: 450, w: 100, h: 16});
         Crafty.e('Platform').attr({x: 700, y: 450, w: 100, h: 16});
+
+        Crafty.e('Mushroom').attr({x: 500, y: 400, w: 69, h: 100});
     };
 
 
@@ -271,7 +276,7 @@
         //This is the floor
         Crafty.e('Platform').attr({x: 0, y: 584, w: 1000, h: 16});
 
-        //These are the platforms
+        // mushrooms
     };
 
 
